@@ -75,3 +75,11 @@ tr.example-element-row {
 .example-toggle-button-expanded {
   transform: rotate(180deg);
 }
+
+.teste-vermelho {
+  background-color: red;
+}
+
+  .teste-vermelho:hover {
+    background-color: red;
+  }

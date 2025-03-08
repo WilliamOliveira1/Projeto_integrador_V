@@ -1,9 +1,11 @@
-import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ChartOptions, ChartType, ChartDataset, Chart, registerables } from 'chart.js';
 import { ExportDailyWeather, Weather } from '../../angular-model/weather';
 import { RainfallService } from '../../services/rainfall/rainfall.service';
+import { AppModalComponent } from '../app-modal/app-modal.component';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -14,6 +16,7 @@ Chart.register(...registerables);
   styleUrls: ['./rainfall.component.css']
 })
 export class RainfallComponent {
+  readonly dialog = inject(MatDialog);
   @ViewChildren('chartCanvas') chartCanvases!: QueryList<ElementRef>;
   @ViewChild(MatPaginator)
     paginator!: MatPaginator;
@@ -36,8 +39,7 @@ export class RainfallComponent {
     this.rainfallService.getWeatherData().subscribe(
       (data: Weather[]) => {
         this.weatherData = data;
-        this.dataSource1.data = this.weatherData;        
-        console.log('Dados do tempo', this.weatherData);        
+        this.dataSource1.data = this.weatherData;     
       },
       (error: any) => {
         this.errorMessage = `Erro ao obter dados do tempo: ${error.message}`;
@@ -62,8 +64,18 @@ export class RainfallComponent {
   }
 
   /** Checks whether an element is expanded. */
-  isExpanded(element: Weather) {
+  public isExpanded(element: Weather) {
     return this.expandedElement === element;
+  }
+
+  openModal(daily: ExportDailyWeather): void {
+    // Open the modal and pass the data
+    this.dialog.open(AppModalComponent, {
+      data: {
+        daily: daily,
+        weatherData: this.weatherData
+      }
+    });    
   }
 
   /** Toggles the expanded state of an element. */
@@ -83,6 +95,15 @@ export class RainfallComponent {
       this.charts[index]?.destroy();
       delete this.charts[index];
     }
+  }
+
+  shouldHighlightHeader(column: string): boolean {
+    if (column === 'precipitation') {
+      return this.dataSource1.data.some(daily => daily.averagePrecipitation === 0.000 && daily.averageTemperatureC === 0.0);
+    } else if (column === 'temperatureC') {
+      return this.dataSource1.data.some(daily => daily.averageTemperatureC === 0.0 && daily.averagePrecipitation === 0.000);
+    }
+    return false;
   }
 
   prepareChartData(dailyWeatherData: ExportDailyWeather[], index: number): void {
