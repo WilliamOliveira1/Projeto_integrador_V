@@ -10,13 +10,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { RainfallComponent } from './rainfall/rainfall.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InstructionComponent } from '../instruction/instruction.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
@@ -24,9 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
-    RainfallComponent
+    RainfallComponent,
+    InstructionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,15 +35,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     ApiAuthorizationModule,
     BrowserAnimationsModule,
-    MatPaginatorModule,    
-    MatTableModule,
-    MatIconModule,
     MatPaginatorModule,
+    MatCardModule,
+    MatTableModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatListModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'rainfall', component: RainfallComponent, canActivate: [AuthorizeGuard] },
+      { path: 'instruction', component: InstructionComponent, canActivate: [AuthorizeGuard] },
     ])
   ],
   providers: [
