@@ -99,45 +99,49 @@ export class RainfallComponent {
     }
     const canvas = this.chartCanvases.toArray()[index].nativeElement;
 
-      this.charts[index] = new Chart(canvas, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Temperatura',
-              data: temperatureData,
-              borderColor: 'red',
-              fill: false
-            },
-            {
-              label: 'Precipitação Pluviométrica',
-              data: precipitationData,
-              borderColor: 'blue',
-              fill: false
-            }
-          ]
+    const firstDate = new Date(dailyWeatherData[0].infoDate);
+    const month = firstDate.toLocaleString('default', { month: 'long' });
+    const year = firstDate.getFullYear();
+
+    this.charts[index] = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Temperatura',
+            data: temperatureData,
+            borderColor: 'red',
+            fill: false
+          },
+          {
+            label: 'Precipitação Pluviométrica',
+            data: precipitationData,
+            borderColor: 'blue',
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: `Gráfico comparativo de oscilações entre temperaturas e precipitações pluviométricas de ${month}/${year} na cidade de Sorocaba/SP - INMET(2024)`
+          }
         },
-        options: {
-          responsive: true,
-          plugins: {
+        scales: {
+          x: {
             title: {
               display: true,
-              text: 'Gráfico comparativo entre temperaturas e precipitações pluviométricas =>50mm entre os anos de 1961 à 2024 na cidade de Sorocaba/SP - INMET(2024)'
+              text: 'Ano'
             }
           },
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'Ano'
-              }
-            },
-            y: {
-              beginAtZero: true
-            }
+          y: {
+            beginAtZero: true
           }
         }
-      }); 
+      }
+    }); 
   }
 }
