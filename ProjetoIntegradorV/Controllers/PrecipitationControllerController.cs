@@ -28,7 +28,20 @@ namespace ProjetoIntegradorV.Controllers
         {
             List<Weather> weatherEntities = _rainfallDataFromCsv.getRainfallData();
             var weatherDtos = WeatherDtoMap.ToDtoList(weatherEntities);
-            return weatherDtos;
+            return Ok(weatherDtos);
+        }
+
+        [HttpPost]
+        public ActionResult<IEnumerable<WeatherDto>> PostRainfallData(
+            [FromQuery(Name = "humidity")] string humidity, 
+            [FromQuery(Name = "temperature")] string temperature, 
+            [FromQuery(Name = "date")] string date)
+        {
+            _logger.LogDebug("humidity: " + humidity);
+            _logger.LogDebug("temperature: " + temperature);
+            _logger.LogDebug("date: " + date);
+            List<Weather> list = new List<Weather>();
+            return Ok();
         }
     }
 }

@@ -15,6 +15,9 @@ namespace ProjetoIntegradorV.Models
         public DateTime InfoDate { get; set; }
         [Required]
         public float Precipitation { get; set; }
+
+        public float Humidity { get; set; }
+
         [Required]
         [MaxLength(4)]
         public float TemperatureC { get; set; }

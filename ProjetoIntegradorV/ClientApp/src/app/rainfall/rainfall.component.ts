@@ -46,6 +46,17 @@ export class RainfallComponent {
         console.error('Erro ao obter dados do tempo', error);
       }
     );
+
+    this.rainfallService.postRainfallData().subscribe(
+      (data: Weather[]) => {
+        debugger;
+      },
+      (error: any) => {
+        debugger;
+        this.errorMessage = `Erro ao obter dados do tempo: ${error.message}`;
+        console.error('Erro ao obter dados do tempo', error);
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -69,7 +80,6 @@ export class RainfallComponent {
   }
 
   openModal(daily: ExportDailyWeather): void {
-    // Open the modal and pass the data
     this.dialog.open(AppModalComponent, {
       data: {
         daily: daily,
@@ -78,7 +88,6 @@ export class RainfallComponent {
     });    
   }
 
-  /** Toggles the expanded state of an element. */
   toggle(element: Weather) {
     this.expandedElement = this.isExpanded(element) ? null : element;
     if (this.expandedElement) {
