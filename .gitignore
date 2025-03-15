@@ -13,9 +13,11 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+.angular/
+
 # Mono auto generated files
 mono_crash.*
-
+ProjetoIntegradorV/appsettings.json
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
